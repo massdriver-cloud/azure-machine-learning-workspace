@@ -74,7 +74,7 @@ params:
                 title: Name
                 description: The name of the compute cluster. **Changing this will recreate the compute cluster**.
                 type: string
-                pattern: ^[a-zA-Z]{1}[a-zA-Z0-9-]{1,30}[a-zA-Z0-9]{1}$
+                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,30}[a-zA-Z0-9]{1}$
                 message:
                   pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens.
               size:
@@ -149,7 +149,7 @@ params:
                 title: Name
                 description: The name of the compute instance. **Changing this will recreate the compute instance**.
                 type: string
-                pattern: ^[a-zA-Z]{1}[a-zA-Z0-9-]{1,22}[a-zA-Z0-9]{1}$
+                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,22}[a-zA-Z0-9]{1}$
                 message:
                   pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens.
               size:
