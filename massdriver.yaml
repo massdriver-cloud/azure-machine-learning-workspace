@@ -1,0 +1,233 @@
+schema: draft-07
+name: azure-machine-learning-workspace
+description: "Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps."
+source_url: github.com/massdriver-cloud/azure-machine-learning-workspace
+access: private
+type: infrastructure
+
+params:
+  examples:
+    - __name: Development
+    - __name: Production
+  required:
+    - workspace
+    - compute
+    - registry
+  properties:
+    workspace:
+      type: object
+      title: Workspace
+      required:
+        - location
+        - high_business_impact
+      properties:
+        location:
+          title: Region
+          description: The region of the workspace. This cannot be changed after the workspace is created.
+          $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/azure-region.json
+          $md.immutable: true
+        high_business_impact:
+          title: Enable high business impact features
+          description: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments.\
+          type: boolean
+          default: false
+    compute:
+      title: Compute
+      description: The compute resources to create in the workspace.
+      type: object
+      required:
+        - cluster
+        - instance
+      properties:
+        cluster:
+          title: Compute clusters
+          description: The compute clusters to create in the workspace.
+          type: array
+          default: []
+          items:
+            type: object
+            title: Compute cluster
+            required:
+              - name
+              - size
+              - min_nodes
+              - max_nodes
+              - idle_duration
+            properties:
+              name:
+                title: Name
+                description: The name of the compute cluster. Cannot be changed after deployment of the cluster.
+                type: string
+                $md.immutable: true
+              size:
+                title: Size
+                description: The size of the compute cluster. Cannot be changed after deployment of the cluster.
+                type: string
+                default: STANDARD_DS11_V2
+                $md.immutable: true
+                oneOf:
+                  - title: 2 cores, 14 GB RAM, 28 GB storage
+                    const: STANDARD_DS11_V2
+                  - title: 4 cores, 16 GB RAM, 32 GB storage
+                    const: STANDARD_D4S_V3
+                  - title: 4 cores, 32 GB RAM, 64 GB storage
+                    const: STANDARD_E4S_V3
+                  - title: 4 cores, 8 GB RAM, 32 GB Storage
+                    const: STANDARD_F4S_V2
+              min_nodes:
+                title: Minimum nodes
+                description: The minimum number of nodes in the compute cluster. Cannot be changed after deployment of the cluster.
+                type: integer
+                default: 0
+                $md.immutable: true
+              max_nodes:
+                title: Maximum nodes
+                description: The maximum number of nodes in the compute cluster. Cannot be changed after deployment of the cluster.
+                type: integer
+                default: 1
+                $md.immutable: true
+              idle_duration:
+                title: Idle duration
+                description: The Idle time before scaling down the cluster to the minimum node count. Cannot be changed after deployment of the cluster.
+                type: string
+                $md.immutable: true
+                default: PT2M
+                oneOf:
+                  - title: 1 minute
+                    const: PT1M
+                  - title: 2 minutes
+                    const: PT2M
+                  - title: 5 minutes
+                    const: PT5M
+                  - title: 10 minutes
+                    const: PT10M
+                  - title: 15 minutes
+                    const: PT15M
+                  - title: 30 minutes
+                    const: PT30M
+                  - title: 45 minutes
+                    const: PT45M
+                  - title: 1 hour
+                    const: PT1H
+                  - title: 2 hours
+                    const: PT2H
+                  - title: 3 hours
+                    const: PT3H
+                  - title: 6 hours
+                    const: PT6H
+                  - title: 12 hours
+                    const: PT12H
+                  - title: 1 day
+                    const: P1D
+        instance:
+          title: Compute instances
+          description: The compute instances to create in the workspace.
+          type: array
+          default: []
+          items:
+            type: object
+            title: Compute instance
+            required:
+              - name
+              - size
+            properties:
+              name:
+                title: Name
+                description: The name of the compute instance. Cannot be changed after deployment of the instance.
+                type: string
+                $md.immutable: true
+              size:
+                title: Size
+                description: The size of the compute instance. Cannot be changed after deployment of the instance.
+                type: string
+                default: STANDARD_DS11_V2
+                $md.immutable: true
+                oneOf:
+                  - title: 2 cores, 14 GB RAM, 28 GB storage
+                    const: STANDARD_DS11_V2
+                  - title: 4 cores, 16 GB RAM, 32 GB storage
+                    const: STANDARD_D4S_V3
+                  - title: 4 cores, 32 GB RAM, 64 GB storage
+                    const: STANDARD_E4S_V3
+                  - title: 4 cores, 8 GB RAM, 32 GB Storage
+                    const: STANDARD_F4S_V2
+    registry:
+      title: Registry
+      description: The registry to use for the workspace.
+      type: object
+      required:
+        - create_registry
+      properties:
+        create_registry:
+          title: Create new Azure Container Registry
+          description: Create a new Azure Container Registry for the workspace? If not, you will need to provide an existing registry. This cannot be changed after deployment.
+          type: boolean
+          default: true
+          $md.immutable: true
+      dependencies:
+        create_registry:
+          oneOf:
+            - properties:
+                create_registry:
+                  const: true
+            - properties:
+                create_registry:
+                  const: false
+                name:
+                  title: Azure Container Registry Name
+                  description: The name of the Azure Container Registry to use. This cannot be changed after deployment.
+                  type: string
+                  $md.immutable: true
+                resource_group:
+                  title: Azure Container Registry Resource Group
+                  description: The resource group of the Azure Container Registry to use. This cannot be changed after deployment.
+                  type: string
+                  $md.immutable: true
+              required:
+                - name
+                - resource_group
+
+connections:
+  required:
+    - azure_service_principal
+  properties:
+    azure_service_principal:
+      $ref: massdriver/azure-service-principal
+
+artifacts:
+  required: []
+  properties: {}
+
+ui:
+  ui:order:
+    - workspace
+    - compute
+    - "*"
+  workspace:
+    ui:order:
+      - location
+      - high_business_impact
+      - "*"
+    location:
+      ui:field: supportedCloudLocationsDropdown
+      cloudService: azure
+  compute:
+    ui:order:
+      - cluster
+      - instance
+      - "*"
+    cluster:
+      items:
+        ui:order:
+          - name
+          - size
+          - min_nodes
+          - max_nodes
+          - idle_duration
+          - "*"
+    instance:
+      items:
+        ui:order:
+          - name
+          - size
+          - "*"
