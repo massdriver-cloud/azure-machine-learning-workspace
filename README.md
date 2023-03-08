@@ -57,7 +57,7 @@ Form input parameters for configuring a bundle for deployment.
 - **`compute`** *(object)*: The compute resources to create in the workspace.
   - **`cluster`** *(array)*: The compute clusters to create in the workspace. Default: `[]`.
     - **Items** *(object)*
-      - **`idle_duration`** *(string)*: The Idle time before scaling down the cluster to the minimum node count. Cannot be changed after deployment of the cluster. Default: `PT2M`.
+      - **`idle_duration`** *(string)*: The Idle time before scaling down the cluster to the minimum node count. **Changing this will recreate the compute cluster**. Default: `PT2M`.
         - **One of**
           - 1 minute
           - 2 minutes
@@ -72,10 +72,10 @@ Form input parameters for configuring a bundle for deployment.
           - 6 hours
           - 12 hours
           - 1 day
-      - **`max_nodes`** *(integer)*: The maximum number of nodes in the compute cluster. Cannot be changed after deployment of the cluster. Default: `1`.
-      - **`min_nodes`** *(integer)*: The minimum number of nodes in the compute cluster. Cannot be changed after deployment of the cluster. Default: `0`.
-      - **`name`** *(string)*: The name of the compute cluster. Cannot be changed after deployment of the cluster.
-      - **`size`** *(string)*: The size of the compute cluster. Cannot be changed after deployment of the cluster. Default: `STANDARD_DS11_V2`.
+      - **`max_nodes`** *(integer)*: The maximum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**. Default: `1`.
+      - **`min_nodes`** *(integer)*: The minimum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**. Default: `0`.
+      - **`name`** *(string)*: The name of the compute cluster. **Changing this will recreate the compute cluster**.
+      - **`size`** *(string)*: The size of the compute cluster. **Changing this will recreate the compute cluster**. Default: `STANDARD_DS11_V2`.
         - **One of**
           - 2 cores, 14 GB RAM, 28 GB storage
           - 4 cores, 16 GB RAM, 32 GB storage
@@ -83,8 +83,8 @@ Form input parameters for configuring a bundle for deployment.
           - 4 cores, 8 GB RAM, 32 GB Storage
   - **`instance`** *(array)*: The compute instances to create in the workspace. Default: `[]`.
     - **Items** *(object)*
-      - **`name`** *(string)*: The name of the compute instance. Cannot be changed after deployment of the instance.
-      - **`size`** *(string)*: The size of the compute instance. Cannot be changed after deployment of the instance. Default: `STANDARD_DS11_V2`.
+      - **`name`** *(string)*: The name of the compute instance. **Changing this will recreate the compute instance**.
+      - **`size`** *(string)*: The size of the compute instance. **Changing this will recreate the compute instance**. Default: `STANDARD_DS11_V2`.
         - **One of**
           - 2 cores, 14 GB RAM, 28 GB storage
           - 4 cores, 16 GB RAM, 32 GB storage
@@ -93,19 +93,44 @@ Form input parameters for configuring a bundle for deployment.
 - **`registry`** *(object)*: The registry to use for the workspace.
   - **`create_registry`** *(boolean)*: Create a new Azure Container Registry for the workspace? If not, you will need to provide an existing registry. This cannot be changed after deployment. Default: `True`.
 - **`workspace`** *(object)*
-  - **`high_business_impact`** *(boolean)*: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments.\. Default: `False`.
+  - **`high_business_impact`** *(boolean)*: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**. Default: `False`.
   - **`location`** *(string)*: The region of the workspace. This cannot be changed after the workspace is created.
 ## Examples
 
   ```json
   {
-      "__name": "Development"
+      "__name": "Development",
+      "compute": {
+          "instance": [
+              {
+                  "name": "instance-1",
+                  "size": "STANDARD_DS11_V2"
+              }
+          ]
+      },
+      "workspace": {
+          "high_business_impact": false
+      }
   }
   ```
 
   ```json
   {
-      "__name": "Production"
+      "__name": "Production",
+      "compute": {
+          "cluster": [
+              {
+                  "idle_duration": "PT5M",
+                  "max_nodes": 1,
+                  "min_nodes": 0,
+                  "name": "cluster-1",
+                  "size": "STANDARD_D4S_V3"
+              }
+          ]
+      },
+      "workspace": {
+          "high_business_impact": true
+      }
   }
   ```
 

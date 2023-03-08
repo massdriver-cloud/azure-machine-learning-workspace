@@ -1,2 +1,14 @@
 # Bad experiences
 Switching regions after decomm doesn't switch the region
+Occasional `InternalServerError` errors on deployment or redeployment, still investigating the cause. Decommission is the only way to resolve. Documented reasons:
+* disable high business impact
+```
+retrieving Application Insights "michael-test-ml-l9fs" (Resource Group "michael-test-ml-l9fs"): insights.ComponentsClient#Get: Failure responding to request: StatusCode=404 -- Original Error: autorest/azure: Service returned an error. Status=404 Code="ResourceNotFound" Message="The Resource 'Microsoft.Insights/components/michael-test-ml-l9fs' under resource group 'michael-test-ml-l9fs' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix"
+```
+
+# Artifact
+
+Info needed for MLClient in SDK
+* sub ID
+* resource group name
+* workspace name

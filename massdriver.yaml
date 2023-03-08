@@ -8,7 +8,22 @@ type: infrastructure
 params:
   examples:
     - __name: Development
+      workspace:
+        high_business_impact: false
+      compute:
+        instance:
+          - name: instance-1
+            size: STANDARD_DS11_V2
     - __name: Production
+      workspace:
+        high_business_impact: true
+      compute:
+        cluster:
+          - name: cluster-1
+            size: STANDARD_D4S_V3
+            min_nodes: 0
+            max_nodes: 1
+            idle_duration: PT5M
   required:
     - workspace
     - compute
@@ -28,9 +43,10 @@ params:
           $md.immutable: true
         high_business_impact:
           title: Enable high business impact features
-          description: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments.\
+          description: "If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**."
           type: boolean
           default: false
+          $md.immutable: true
     compute:
       title: Compute
       description: The compute resources to create in the workspace.
@@ -56,15 +72,16 @@ params:
             properties:
               name:
                 title: Name
-                description: The name of the compute cluster. Cannot be changed after deployment of the cluster.
+                description: The name of the compute cluster. **Changing this will recreate the compute cluster**.
                 type: string
-                $md.immutable: true
+                pattern: ^[a-zA-Z]{1}[a-zA-Z0-9-]{1,30}[a-zA-Z0-9]{1}$
+                message:
+                  pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens.
               size:
                 title: Size
-                description: The size of the compute cluster. Cannot be changed after deployment of the cluster.
+                description: The size of the compute cluster. **Changing this will recreate the compute cluster**.
                 type: string
                 default: STANDARD_DS11_V2
-                $md.immutable: true
                 oneOf:
                   - title: 2 cores, 14 GB RAM, 28 GB storage
                     const: STANDARD_DS11_V2
@@ -76,21 +93,18 @@ params:
                     const: STANDARD_F4S_V2
               min_nodes:
                 title: Minimum nodes
-                description: The minimum number of nodes in the compute cluster. Cannot be changed after deployment of the cluster.
+                description: The minimum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**.
                 type: integer
                 default: 0
-                $md.immutable: true
               max_nodes:
                 title: Maximum nodes
-                description: The maximum number of nodes in the compute cluster. Cannot be changed after deployment of the cluster.
+                description: The maximum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**.
                 type: integer
                 default: 1
-                $md.immutable: true
               idle_duration:
                 title: Idle duration
-                description: The Idle time before scaling down the cluster to the minimum node count. Cannot be changed after deployment of the cluster.
+                description: The Idle time before scaling down the cluster to the minimum node count. **Changing this will recreate the compute cluster**.
                 type: string
-                $md.immutable: true
                 default: PT2M
                 oneOf:
                   - title: 1 minute
@@ -133,15 +147,16 @@ params:
             properties:
               name:
                 title: Name
-                description: The name of the compute instance. Cannot be changed after deployment of the instance.
+                description: The name of the compute instance. **Changing this will recreate the compute instance**.
                 type: string
-                $md.immutable: true
+                pattern: ^[a-zA-Z]{1}[a-zA-Z0-9-]{1,22}[a-zA-Z0-9]{1}$
+                message:
+                  pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens.
               size:
                 title: Size
-                description: The size of the compute instance. Cannot be changed after deployment of the instance.
+                description: The size of the compute instance. **Changing this will recreate the compute instance**.
                 type: string
                 default: STANDARD_DS11_V2
-                $md.immutable: true
                 oneOf:
                   - title: 2 cores, 14 GB RAM, 28 GB storage
                     const: STANDARD_DS11_V2
@@ -175,12 +190,12 @@ params:
                   const: false
                 name:
                   title: Azure Container Registry Name
-                  description: The name of the Azure Container Registry to use. This cannot be changed after deployment.
+                  description: The name of the Azure Container Registry to use. **This cannot be changed after deployment**.
                   type: string
                   $md.immutable: true
                 resource_group:
                   title: Azure Container Registry Resource Group
-                  description: The resource group of the Azure Container Registry to use. This cannot be changed after deployment.
+                  description: The resource group of the Azure Container Registry to use. **This cannot be changed after deployment**.
                   type: string
                   $md.immutable: true
               required:
