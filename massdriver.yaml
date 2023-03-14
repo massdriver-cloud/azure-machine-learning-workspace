@@ -11,23 +11,31 @@ params:
       workspace:
         high_business_impact: false
       compute:
+        cluster:
+          - name: cluster1
+            size: STANDARD_DS11_V2
+            min_nodes: 0
+            max_nodes: 1
+            idle_duration: PT5M
         instance:
-          - name: instance-1
+          - name: instance1
             size: STANDARD_DS11_V2
     - __name: Production
       workspace:
         high_business_impact: true
       compute:
         cluster:
-          - name: cluster-1
-            size: STANDARD_D4S_V3
+          - name: cluster1
+            size: STANDARD_F4S_V2
             min_nodes: 0
-            max_nodes: 1
-            idle_duration: PT5M
+            max_nodes: 3
+            idle_duration: PT1H
+        instance:
+          - name: instance1
+            size: STANDARD_F4S_V2
   required:
     - workspace
     - compute
-    - registry
   properties:
     workspace:
       type: object
@@ -57,9 +65,9 @@ params:
       properties:
         cluster:
           title: Compute clusters
-          description: The compute clusters to create in the workspace.
+          description: The compute clusters to create in the workspace. **Changes cannot be made to each cluster after it is created**.
           type: array
-          default: []
+          minItems: 1
           items:
             type: object
             title: Compute cluster
@@ -72,15 +80,17 @@ params:
             properties:
               name:
                 title: Name
-                description: The name of the compute cluster. **Changing this will recreate the compute cluster**.
+                description: The name of the compute cluster.
                 type: string
+                $md.immutable: true
                 pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,30}[a-zA-Z0-9]{1}$
                 message:
                   pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens.
               size:
                 title: Size
-                description: The size of the compute cluster. **Changing this will recreate the compute cluster**.
+                description: The size of the compute cluster.
                 type: string
+                $md.immutable: true
                 default: STANDARD_DS11_V2
                 oneOf:
                   - title: 2 cores, 14 GB RAM, 28 GB storage
@@ -93,18 +103,21 @@ params:
                     const: STANDARD_F4S_V2
               min_nodes:
                 title: Minimum nodes
-                description: The minimum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**.
+                description: The minimum number of nodes in the compute cluster.
                 type: integer
+                $md.immutable: true
                 default: 0
               max_nodes:
                 title: Maximum nodes
-                description: The maximum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**.
+                description: The maximum number of nodes in the compute cluster.
                 type: integer
+                $md.immutable: true
                 default: 1
               idle_duration:
                 title: Idle duration
-                description: The Idle time before scaling down the cluster to the minimum node count. **Changing this will recreate the compute cluster**.
+                description: The Idle time before scaling down the cluster to the minimum node count.
                 type: string
+                $md.immutable: true
                 default: PT2M
                 oneOf:
                   - title: 1 minute
@@ -135,27 +148,30 @@ params:
                     const: P1D
         instance:
           title: Compute instances
-          description: The compute instances to create in the workspace.
+          description: The compute instances to create in the workspace. **Changes cannot be made to each instance after it is created**.
           type: array
-          default: []
+          minItems: 1
           items:
             type: object
             title: Compute instance
             required:
               - name
               - size
+              - user
             properties:
               name:
                 title: Name
-                description: The name of the compute instance. **Changing this will recreate the compute instance**.
+                description: The name of the compute instance.
                 type: string
+                $md.immutable: true
                 pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,22}[a-zA-Z0-9]{1}$
                 message:
                   pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens.
               size:
                 title: Size
-                description: The size of the compute instance. **Changing this will recreate the compute instance**.
+                description: The size of the compute instance.
                 type: string
+                $md.immutable: true
                 default: STANDARD_DS11_V2
                 oneOf:
                   - title: 2 cores, 14 GB RAM, 28 GB storage
@@ -166,41 +182,12 @@ params:
                     const: STANDARD_E4S_V3
                   - title: 4 cores, 8 GB RAM, 32 GB Storage
                     const: STANDARD_F4S_V2
-    registry:
-      title: Registry
-      description: The registry to use for the workspace.
-      type: object
-      required:
-        - create_registry
-      properties:
-        create_registry:
-          title: Create new Azure Container Registry
-          description: Create a new Azure Container Registry for the workspace? If not, you will need to provide an existing registry. This cannot be changed after deployment.
-          type: boolean
-          default: true
-          $md.immutable: true
-      dependencies:
-        create_registry:
-          oneOf:
-            - properties:
-                create_registry:
-                  const: true
-            - properties:
-                create_registry:
-                  const: false
-                name:
-                  title: Azure Container Registry Name
-                  description: The name of the Azure Container Registry to use. **This cannot be changed after deployment**.
-                  type: string
-                  $md.immutable: true
-                resource_group:
-                  title: Azure Container Registry Resource Group
-                  description: The resource group of the Azure Container Registry to use. **This cannot be changed after deployment**.
-                  type: string
-                  $md.immutable: true
-              required:
-                - name
-                - resource_group
+              user:
+                title: User permitted to access the compute instance
+                description: Must be a valid [Object ID](https://learn.microsoft.com/en-us/partner-center/find-ids-and-domain-names#find-the-user-object-id) for the Azure AD user.
+                type: string
+                $md.immutable: true
+                format: uuid
 
 connections:
   required:
@@ -210,8 +197,11 @@ connections:
       $ref: massdriver/azure-service-principal
 
 artifacts:
-  required: []
-  properties: {}
+  required:
+    - azure_machine_learning_workspace
+  properties:
+    azure_machine_learning_workspace:
+      $ref: massdriver/azure-machine-learning-workspace
 
 ui:
   ui:order:
@@ -245,4 +235,5 @@ ui:
         ui:order:
           - name
           - size
+          - user
           - "*"

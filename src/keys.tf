@@ -58,29 +58,6 @@ resource "azurerm_key_vault" "main" {
   }
 }
 
-# resource "azurerm_key_vault_access_policy" "main-identity" {
-#   key_vault_id = azurerm_key_vault.main.id
-#   tenant_id    = var.azure_service_principal.data.tenant_id
-#   object_id    = azurerm_user_assigned_identity.main.principal_id
-
-#   key_permissions = [
-#     "WrapKey",
-#     "UnwrapKey",
-#     "Get",
-#     "Recover",
-#   ]
-
-#   secret_permissions = [
-#     "Get",
-#     "List",
-#     "Set",
-#     "Delete",
-#     "Recover",
-#     "Backup",
-#     "Restore",
-#   ]
-# }
-
 resource "azurerm_key_vault_key" "main" {
   name            = "${var.md_metadata.name_prefix}key"
   key_vault_id    = azurerm_key_vault.main.id

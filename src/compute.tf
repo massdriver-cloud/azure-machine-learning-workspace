@@ -30,6 +30,11 @@ resource "azurerm_machine_learning_compute_instance" "main" {
   authorization_type            = "personal"
   tags                          = var.md_metadata.default_tags
 
+  assign_to_user {
+    tenant_id = var.azure_service_principal.data.tenant_id
+    object_id = each.value.user # needs to be the object ID of a user that is allowed to access the compute instance. this can vary per compute instance
+  }
+
   identity {
     type = "UserAssigned"
     identity_ids = [

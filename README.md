@@ -55,9 +55,9 @@ Form input parameters for configuring a bundle for deployment.
 ## Properties
 
 - **`compute`** *(object)*: The compute resources to create in the workspace.
-  - **`cluster`** *(array)*: The compute clusters to create in the workspace. Default: `[]`.
+  - **`cluster`** *(array)*: The compute clusters to create in the workspace. **Changes cannot be made to each cluster after it is created**.
     - **Items** *(object)*
-      - **`idle_duration`** *(string)*: The Idle time before scaling down the cluster to the minimum node count. **Changing this will recreate the compute cluster**. Default: `PT2M`.
+      - **`idle_duration`** *(string)*: The Idle time before scaling down the cluster to the minimum node count. Default: `PT2M`.
         - **One of**
           - 1 minute
           - 2 minutes
@@ -72,26 +72,25 @@ Form input parameters for configuring a bundle for deployment.
           - 6 hours
           - 12 hours
           - 1 day
-      - **`max_nodes`** *(integer)*: The maximum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**. Default: `1`.
-      - **`min_nodes`** *(integer)*: The minimum number of nodes in the compute cluster. **Changing this will recreate the compute cluster**. Default: `0`.
-      - **`name`** *(string)*: The name of the compute cluster. **Changing this will recreate the compute cluster**.
-      - **`size`** *(string)*: The size of the compute cluster. **Changing this will recreate the compute cluster**. Default: `STANDARD_DS11_V2`.
+      - **`max_nodes`** *(integer)*: The maximum number of nodes in the compute cluster. Default: `1`.
+      - **`min_nodes`** *(integer)*: The minimum number of nodes in the compute cluster. Default: `0`.
+      - **`name`** *(string)*: The name of the compute cluster.
+      - **`size`** *(string)*: The size of the compute cluster. Default: `STANDARD_DS11_V2`.
         - **One of**
           - 2 cores, 14 GB RAM, 28 GB storage
           - 4 cores, 16 GB RAM, 32 GB storage
           - 4 cores, 32 GB RAM, 64 GB storage
           - 4 cores, 8 GB RAM, 32 GB Storage
-  - **`instance`** *(array)*: The compute instances to create in the workspace. Default: `[]`.
+  - **`instance`** *(array)*: The compute instances to create in the workspace. **Changes cannot be made to each instance after it is created**.
     - **Items** *(object)*
-      - **`name`** *(string)*: The name of the compute instance. **Changing this will recreate the compute instance**.
-      - **`size`** *(string)*: The size of the compute instance. **Changing this will recreate the compute instance**. Default: `STANDARD_DS11_V2`.
+      - **`name`** *(string)*: The name of the compute instance.
+      - **`size`** *(string)*: The size of the compute instance. Default: `STANDARD_DS11_V2`.
         - **One of**
           - 2 cores, 14 GB RAM, 28 GB storage
           - 4 cores, 16 GB RAM, 32 GB storage
           - 4 cores, 32 GB RAM, 64 GB storage
           - 4 cores, 8 GB RAM, 32 GB Storage
-- **`registry`** *(object)*: The registry to use for the workspace.
-  - **`create_registry`** *(boolean)*: Create a new Azure Container Registry for the workspace? If not, you will need to provide an existing registry. This cannot be changed after deployment. Default: `True`.
+      - **`user`** *(string)*: Must be a valid [Object ID](https://learn.microsoft.com/en-us/partner-center/find-ids-and-domain-names#find-the-user-object-id) for the Azure AD user.
 - **`workspace`** *(object)*
   - **`high_business_impact`** *(boolean)*: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**. Default: `False`.
   - **`location`** *(string)*: The region of the workspace. This cannot be changed after the workspace is created.
@@ -101,9 +100,18 @@ Form input parameters for configuring a bundle for deployment.
   {
       "__name": "Development",
       "compute": {
+          "cluster": [
+              {
+                  "idle_duration": "PT5M",
+                  "max_nodes": 1,
+                  "min_nodes": 0,
+                  "name": "cluster1",
+                  "size": "STANDARD_DS11_V2"
+              }
+          ],
           "instance": [
               {
-                  "name": "instance-1",
+                  "name": "instance1",
                   "size": "STANDARD_DS11_V2"
               }
           ]
@@ -120,11 +128,17 @@ Form input parameters for configuring a bundle for deployment.
       "compute": {
           "cluster": [
               {
-                  "idle_duration": "PT5M",
-                  "max_nodes": 1,
+                  "idle_duration": "PT1H",
+                  "max_nodes": 3,
                   "min_nodes": 0,
-                  "name": "cluster-1",
-                  "size": "STANDARD_D4S_V3"
+                  "name": "cluster1",
+                  "size": "STANDARD_F4S_V2"
+              }
+          ],
+          "instance": [
+              {
+                  "name": "instance1",
+                  "size": "STANDARD_F4S_V2"
               }
           ]
       },
@@ -187,6 +201,41 @@ Resources created by this bundle that can be connected to other bundles.
 <!-- ARTIFACTS:START -->
 ## Properties
 
+- **`azure_machine_learning_workspace`** *(object)*: . Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`infrastructure`** *(object)*
+      - **`ari`** *(string)*: Azure Resource ID.
+
+        Examples:
+        ```json
+        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
+        ```
+
+      - **`discovery_url`** *(string)*: An HTTPS endpoint URL.
+
+        Examples:
+        ```json
+        "https://example.com/some/path"
+        ```
+
+        ```json
+        "https://massdriver.cloud"
+        ```
+
+    - **`security`** *(object)*: Azure Security Configuration. Cannot contain additional properties.
+      - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
+        - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
+          - **`role`**: Azure Role.
+
+            Examples:
+            ```json
+            "Storage Blob Data Reader"
+            ```
+
+          - **`scope`** *(string)*: Azure IAM Scope.
+  - **`specs`** *(object)*
+    - **`azure`** *(object)*: .
+      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
 <!-- ARTIFACTS:END -->
 
 </details>
