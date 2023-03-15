@@ -33,3 +33,9 @@ resource "azurerm_role_assignment" "key_vault" {
   role_definition_name = "Contributor"
   principal_id         = azurerm_user_assigned_identity.main.principal_id
 }
+
+resource "azurerm_role_assignment" "ml_workspace" {
+  scope                = azurerm_machine_learning_workspace.main.id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
+}
