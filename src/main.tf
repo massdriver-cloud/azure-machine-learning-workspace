@@ -41,7 +41,6 @@ resource "azurerm_machine_learning_workspace" "main" {
     azurerm_role_assignment.storage_account,
     azurerm_role_assignment.app_insights,
     azurerm_role_assignment.container,
-    azurerm_role_assignment.key_vault_read,
-    azurerm_role_assignment.key_vault_write,
+    azurerm_role_assignment.key_vault,
   ]
 }

@@ -24,17 +24,11 @@ resource "azurerm_role_assignment" "app_insights" {
 
 resource "azurerm_role_assignment" "container" {
   scope                = "/subscriptions/${var.azure_service_principal.data.subscription_id}"
-  role_definition_name = "AcrPull"
+  role_definition_name = "Contributor"
   principal_id         = azurerm_user_assigned_identity.main.principal_id
 }
 
-resource "azurerm_role_assignment" "key_vault_read" {
-  scope                = azurerm_key_vault.main.id
-  role_definition_name = "Reader"
-  principal_id         = azurerm_user_assigned_identity.main.principal_id
-}
-
-resource "azurerm_role_assignment" "key_vault_write" {
+resource "azurerm_role_assignment" "key_vault" {
   scope                = azurerm_key_vault.main.id
   role_definition_name = "Contributor"
   principal_id         = azurerm_user_assigned_identity.main.principal_id
