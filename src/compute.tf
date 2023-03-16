@@ -3,6 +3,7 @@ resource "azurerm_machine_learning_compute_cluster" "main" {
   name                          = each.value.name
   location                      = azurerm_resource_group.main.location
   machine_learning_workspace_id = azurerm_machine_learning_workspace.main.id
+  local_auth_enabled            = false
   vm_priority                   = "Dedicated"
   vm_size                       = each.value.size
   tags                          = var.md_metadata.default_tags
@@ -28,6 +29,7 @@ resource "azurerm_machine_learning_compute_instance" "main" {
   machine_learning_workspace_id = azurerm_machine_learning_workspace.main.id
   virtual_machine_size          = each.value.size
   authorization_type            = "personal"
+  local_auth_enabled            = false
   tags                          = var.md_metadata.default_tags
 
   assign_to_user {
