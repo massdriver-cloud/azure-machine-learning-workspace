@@ -93,13 +93,13 @@ params:
                 $md.immutable: true
                 default: STANDARD_DS11_V2
                 oneOf:
-                  - title: 2 cores, 14 GB RAM, 28 GB storage
+                  - title: Memory optimized 2 cores, 14 GB RAM, 28 GB storage
                     const: STANDARD_DS11_V2
-                  - title: 4 cores, 16 GB RAM, 32 GB storage
+                  - title: General purpose 4 cores, 16 GB RAM, 32 GB storage
                     const: STANDARD_D4S_V3
-                  - title: 4 cores, 32 GB RAM, 64 GB storage
+                  - title: Memory optimized 4 cores, 32 GB RAM, 64 GB storage
                     const: STANDARD_E4S_V3
-                  - title: 4 cores, 8 GB RAM, 32 GB Storage
+                  - title: Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
                     const: STANDARD_F4S_V2
               min_nodes:
                 title: Minimum nodes
@@ -174,13 +174,13 @@ params:
                 $md.immutable: true
                 default: STANDARD_DS11_V2
                 oneOf:
-                  - title: 2 cores, 14 GB RAM, 28 GB storage
+                  - title: Memory optimized 2 cores, 14 GB RAM, 28 GB storage
                     const: STANDARD_DS11_V2
-                  - title: 4 cores, 16 GB RAM, 32 GB storage
+                  - title: General purpose 4 cores, 16 GB RAM, 32 GB storage
                     const: STANDARD_D4S_V3
-                  - title: 4 cores, 32 GB RAM, 64 GB storage
+                  - title: Memory optimized 4 cores, 32 GB RAM, 64 GB storage
                     const: STANDARD_E4S_V3
-                  - title: 4 cores, 8 GB RAM, 32 GB Storage
+                  - title: Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
                     const: STANDARD_F4S_V2
               user:
                 title: User permitted to access the compute instance
