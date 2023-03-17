@@ -2,7 +2,7 @@ schema: draft-07
 name: azure-machine-learning-workspace
 description: "Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps."
 source_url: github.com/massdriver-cloud/azure-machine-learning-workspace
-access: private
+access: public
 type: infrastructure
 
 params:
