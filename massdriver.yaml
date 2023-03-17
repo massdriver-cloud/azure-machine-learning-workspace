@@ -1,0 +1,239 @@
+schema: draft-07
+name: azure-machine-learning-workspace
+description: "Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps."
+source_url: github.com/massdriver-cloud/azure-machine-learning-workspace
+access: private
+type: infrastructure
+
+params:
+  examples:
+    - __name: Development
+      workspace:
+        high_business_impact: false
+      compute:
+        cluster:
+          - name: cluster1
+            size: STANDARD_DS11_V2
+            min_nodes: 0
+            max_nodes: 1
+            idle_duration: PT5M
+        instance:
+          - name: instance1
+            size: STANDARD_DS11_V2
+    - __name: Production
+      workspace:
+        high_business_impact: true
+      compute:
+        cluster:
+          - name: cluster1
+            size: STANDARD_F4S_V2
+            min_nodes: 0
+            max_nodes: 3
+            idle_duration: PT1H
+        instance:
+          - name: instance1
+            size: STANDARD_F4S_V2
+  required:
+    - workspace
+    - compute
+  properties:
+    workspace:
+      type: object
+      title: Workspace
+      required:
+        - location
+        - high_business_impact
+      properties:
+        location:
+          title: Region
+          description: The region of the workspace. This cannot be changed after the workspace is created.
+          $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/azure-region.json
+          $md.immutable: true
+        high_business_impact:
+          title: Enable high business impact features
+          description: "If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**."
+          type: boolean
+          default: false
+          $md.immutable: true
+    compute:
+      title: Compute
+      description: The compute resources to create in the workspace.
+      type: object
+      required:
+        - cluster
+        - instance
+      properties:
+        cluster:
+          title: Compute clusters
+          description: The compute clusters to create in the workspace. **Changes cannot be made to each cluster after it is created**.
+          type: array
+          minItems: 1
+          items:
+            type: object
+            title: Compute cluster
+            required:
+              - name
+              - size
+              - min_nodes
+              - max_nodes
+              - idle_duration
+            properties:
+              name:
+                title: Name
+                description: The name of the compute cluster.
+                type: string
+                $md.immutable: true
+                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,30}[a-zA-Z0-9]{1}$
+                message:
+                  pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens.
+              size:
+                title: Size
+                description: The size of the compute cluster.
+                type: string
+                $md.immutable: true
+                default: STANDARD_DS11_V2
+                oneOf:
+                  - title: Memory optimized 2 cores, 14 GB RAM, 28 GB storage
+                    const: STANDARD_DS11_V2
+                  - title: General purpose 4 cores, 16 GB RAM, 32 GB storage
+                    const: STANDARD_D4S_V3
+                  - title: Memory optimized 4 cores, 32 GB RAM, 64 GB storage
+                    const: STANDARD_E4S_V3
+                  - title: Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
+                    const: STANDARD_F4S_V2
+              min_nodes:
+                title: Minimum nodes
+                description: The minimum number of nodes in the compute cluster.
+                type: integer
+                $md.immutable: true
+                default: 0
+              max_nodes:
+                title: Maximum nodes
+                description: The maximum number of nodes in the compute cluster.
+                type: integer
+                $md.immutable: true
+                default: 1
+              idle_duration:
+                title: Idle duration
+                description: The Idle time before scaling down the cluster to the minimum node count.
+                type: string
+                $md.immutable: true
+                default: PT2M
+                oneOf:
+                  - title: 1 minute
+                    const: PT1M
+                  - title: 2 minutes
+                    const: PT2M
+                  - title: 5 minutes
+                    const: PT5M
+                  - title: 10 minutes
+                    const: PT10M
+                  - title: 15 minutes
+                    const: PT15M
+                  - title: 30 minutes
+                    const: PT30M
+                  - title: 45 minutes
+                    const: PT45M
+                  - title: 1 hour
+                    const: PT1H
+                  - title: 2 hours
+                    const: PT2H
+                  - title: 3 hours
+                    const: PT3H
+                  - title: 6 hours
+                    const: PT6H
+                  - title: 12 hours
+                    const: PT12H
+                  - title: 1 day
+                    const: P1D
+        instance:
+          title: Compute instances
+          description: The compute instances to create in the workspace. **Changes cannot be made to each instance after it is created**.
+          type: array
+          minItems: 1
+          items:
+            type: object
+            title: Compute instance
+            required:
+              - name
+              - size
+              - user
+            properties:
+              name:
+                title: Name
+                description: The name of the compute instance.
+                type: string
+                $md.immutable: true
+                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,22}[a-zA-Z0-9]{1}$
+                message:
+                  pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens.
+              size:
+                title: Size
+                description: The size of the compute instance.
+                type: string
+                $md.immutable: true
+                default: STANDARD_DS11_V2
+                oneOf:
+                  - title: Memory optimized 2 cores, 14 GB RAM, 28 GB storage
+                    const: STANDARD_DS11_V2
+                  - title: General purpose 4 cores, 16 GB RAM, 32 GB storage
+                    const: STANDARD_D4S_V3
+                  - title: Memory optimized 4 cores, 32 GB RAM, 64 GB storage
+                    const: STANDARD_E4S_V3
+                  - title: Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
+                    const: STANDARD_F4S_V2
+              user:
+                title: User permitted to access the compute instance
+                description: Must be a valid [Object ID](https://learn.microsoft.com/en-us/partner-center/find-ids-and-domain-names#find-the-user-object-id) for the Azure AD user.
+                type: string
+                $md.immutable: true
+                format: uuid
+
+connections:
+  required:
+    - azure_service_principal
+  properties:
+    azure_service_principal:
+      $ref: massdriver/azure-service-principal
+
+artifacts:
+  required:
+    - azure_machine_learning_workspace
+  properties:
+    azure_machine_learning_workspace:
+      $ref: massdriver/azure-machine-learning-workspace
+
+ui:
+  ui:order:
+    - workspace
+    - compute
+    - "*"
+  workspace:
+    ui:order:
+      - location
+      - high_business_impact
+      - "*"
+    location:
+      ui:field: supportedCloudLocationsDropdown
+      cloudService: azure
+  compute:
+    ui:order:
+      - cluster
+      - instance
+      - "*"
+    cluster:
+      items:
+        ui:order:
+          - name
+          - size
+          - min_nodes
+          - max_nodes
+          - idle_duration
+          - "*"
+    instance:
+      items:
+        ui:order:
+          - name
+          - size
+          - user
+          - "*"

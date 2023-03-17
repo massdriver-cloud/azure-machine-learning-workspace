@@ -1,0 +1,7 @@
+{
+    "do_not_delete": [
+        "azurerm_machine_learning_workspace.main",
+        "azurerm_key_vault.main",
+        "azurerm_storage_account.main"
+    ]
+}
