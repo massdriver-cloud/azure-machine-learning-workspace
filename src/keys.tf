@@ -79,6 +79,6 @@ resource "azurerm_key_vault_key" "main" {
 
   depends_on = [
     azurerm_key_vault_access_policy.managed-identity,
-    azurerm_key_vault_access_policy.sp,
+    azurerm_key_vault_access_policy.provisioner,
   ]
 }
