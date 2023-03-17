@@ -46,7 +46,7 @@ params:
       properties:
         location:
           title: Region
-          description: The region of the workspace. This cannot be changed after the workspace is created.
+          description: The region of the workspace. **This cannot be changed after the workspace is created**.
           $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/azure-region.json
           $md.immutable: true
         high_business_impact:
