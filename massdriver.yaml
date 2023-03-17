@@ -183,7 +183,7 @@ params:
                   - title: Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
                     const: STANDARD_F4S_V2
               user:
-                title: User permitted to access the compute instance
+                title: User Object ID permitted to access the compute instance
                 description: Must be a valid [Object ID](https://learn.microsoft.com/en-us/partner-center/find-ids-and-domain-names#find-the-user-object-id) for the Azure AD user.
                 type: string
                 $md.immutable: true
