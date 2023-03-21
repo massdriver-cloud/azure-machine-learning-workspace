@@ -76,23 +76,23 @@ Form input parameters for configuring a bundle for deployment.
       - **`name`** *(string)*: The name of the compute cluster.
       - **`size`** *(string)*: The size of the compute cluster. Default: `STANDARD_DS11_V2`.
         - **One of**
-          - 2 cores, 14 GB RAM, 28 GB storage
-          - 4 cores, 16 GB RAM, 32 GB storage
-          - 4 cores, 32 GB RAM, 64 GB storage
-          - 4 cores, 8 GB RAM, 32 GB Storage
+          - Memory optimized 2 cores, 14 GB RAM, 28 GB storage
+          - General purpose 4 cores, 16 GB RAM, 32 GB storage
+          - Memory optimized 4 cores, 32 GB RAM, 64 GB storage
+          - Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
   - **`instance`** *(array)*: The compute instances to create in the workspace. **Changes cannot be made to each instance after it is created**.
     - **Items** *(object)*
       - **`name`** *(string)*: The name of the compute instance.
       - **`size`** *(string)*: The size of the compute instance. Default: `STANDARD_DS11_V2`.
         - **One of**
-          - 2 cores, 14 GB RAM, 28 GB storage
-          - 4 cores, 16 GB RAM, 32 GB storage
-          - 4 cores, 32 GB RAM, 64 GB storage
-          - 4 cores, 8 GB RAM, 32 GB Storage
+          - Memory optimized 2 cores, 14 GB RAM, 28 GB storage
+          - General purpose 4 cores, 16 GB RAM, 32 GB storage
+          - Memory optimized 4 cores, 32 GB RAM, 64 GB storage
+          - Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
       - **`user`** *(string)*: Must be a valid [Object ID](https://learn.microsoft.com/en-us/partner-center/find-ids-and-domain-names#find-the-user-object-id) for the Azure AD user.
 - **`workspace`** *(object)*
   - **`high_business_impact`** *(boolean)*: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**. Default: `False`.
-  - **`location`** *(string)*: The region of the workspace. This cannot be changed after the workspace is created.
+  - **`location`** *(string)*: The region of the workspace. **This cannot be changed after the workspace is created**.
 ## Examples
 
   ```json
