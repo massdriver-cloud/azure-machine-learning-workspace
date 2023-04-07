@@ -80,12 +80,12 @@ params:
             properties:
               name:
                 title: Name
-                description: The name of the compute cluster.
+                description: The name of the compute cluster. Must be unique within the region.
                 type: string
                 $md.immutable: true
-                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,30}[a-zA-Z0-9]{1}$
+                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,29}[a-zA-Z0-9]{2}$
                 message:
-                  pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens.
+                  pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens. Last two characters cannot include a hyphen.
               size:
                 title: Size
                 description: The size of the compute cluster.
@@ -161,12 +161,12 @@ params:
             properties:
               name:
                 title: Name
-                description: The name of the compute instance.
+                description: The name of the compute instance. Must be unique within the region.
                 type: string
                 $md.immutable: true
-                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,22}[a-zA-Z0-9]{1}$
+                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,21}[a-zA-Z0-9]{2}$
                 message:
-                  pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens.
+                  pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens. Last two characters cannot include a hyphen.
               size:
                 title: Size
                 description: The size of the compute instance.
