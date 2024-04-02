@@ -73,7 +73,7 @@ Form input parameters for configuring a bundle for deployment.
           - 1 day
       - **`max_nodes`** *(integer)*: The maximum number of nodes in the compute cluster. Default: `1`.
       - **`min_nodes`** *(integer)*: The minimum number of nodes in the compute cluster. Default: `0`.
-      - **`name`** *(string)*: The name of the compute cluster.
+      - **`name`** *(string)*: The name of the compute cluster. Must be unique within the region.
       - **`size`** *(string)*: The size of the compute cluster. Default: `STANDARD_DS11_V2`.
         - **One of**
           - Memory optimized 2 cores, 14 GB RAM, 28 GB storage
@@ -82,7 +82,7 @@ Form input parameters for configuring a bundle for deployment.
           - Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
   - **`instance`** *(array)*: The compute instances to create in the workspace. **Changes cannot be made to each instance after it is created**.
     - **Items** *(object)*
-      - **`name`** *(string)*: The name of the compute instance.
+      - **`name`** *(string)*: The name of the compute instance. Must be unique within the region.
       - **`size`** *(string)*: The size of the compute instance. Default: `STANDARD_DS11_V2`.
         - **One of**
           - Memory optimized 2 cores, 14 GB RAM, 28 GB storage
