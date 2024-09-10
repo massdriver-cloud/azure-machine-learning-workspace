@@ -17,7 +17,7 @@ Azure Machine Learning is a cloud service for accelerating and managing the mach
 
 ## Design
 
-For detailed information, check out our [Operator Guide](operator.mdx) for this bundle.
+For detailed information, check out our [Operator Guide](operator.md) for this bundle.
 
 ## Usage
 
@@ -37,101 +37,8 @@ Form input parameters for configuring a bundle for deployment.
 <summary>View</summary>
 
 <!-- PARAMS:START -->
-## Properties
 
-- **`compute`** *(object)*: The compute resources to create in the workspace.
-  - **`cluster`** *(array)*: The compute clusters to create in the workspace. **Changes cannot be made to each cluster after it is created**.
-    - **Items** *(object)*
-      - **`idle_duration`** *(string)*: The Idle time before scaling down the cluster to the minimum node count. Default: `PT2M`.
-        - **One of**
-          - 1 minute
-          - 2 minutes
-          - 5 minutes
-          - 10 minutes
-          - 15 minutes
-          - 30 minutes
-          - 45 minutes
-          - 1 hour
-          - 2 hours
-          - 3 hours
-          - 6 hours
-          - 12 hours
-          - 1 day
-      - **`max_nodes`** *(integer)*: The maximum number of nodes in the compute cluster. Default: `1`.
-      - **`min_nodes`** *(integer)*: The minimum number of nodes in the compute cluster. Default: `0`.
-      - **`name`** *(string)*: The name of the compute cluster. Must be unique within the region.
-      - **`size`** *(string)*: The size of the compute cluster. Default: `STANDARD_DS11_V2`.
-        - **One of**
-          - Memory optimized 2 cores, 14 GB RAM, 28 GB storage
-          - General purpose 4 cores, 16 GB RAM, 32 GB storage
-          - Memory optimized 4 cores, 32 GB RAM, 64 GB storage
-          - Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
-  - **`instance`** *(array)*: The compute instances to create in the workspace. **Changes cannot be made to each instance after it is created**.
-    - **Items** *(object)*
-      - **`name`** *(string)*: The name of the compute instance. Must be unique within the region.
-      - **`size`** *(string)*: The size of the compute instance. Default: `STANDARD_DS11_V2`.
-        - **One of**
-          - Memory optimized 2 cores, 14 GB RAM, 28 GB storage
-          - General purpose 4 cores, 16 GB RAM, 32 GB storage
-          - Memory optimized 4 cores, 32 GB RAM, 64 GB storage
-          - Compute optimized 4 cores, 8 GB RAM, 32 GB Storage
-      - **`user`** *(string)*: Must be a valid [Object ID](https://learn.microsoft.com/en-us/partner-center/find-ids-and-domain-names#find-the-user-object-id) for the Azure AD user.
-- **`workspace`** *(object)*
-  - **`high_business_impact`** *(boolean)*: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**. Default: `False`.
-  - **`location`** *(string)*: The region of the workspace. **This cannot be changed after the workspace is created**.
-## Examples
-
-  ```json
-  {
-      "__name": "Development",
-      "compute": {
-          "cluster": [
-              {
-                  "idle_duration": "PT5M",
-                  "max_nodes": 1,
-                  "min_nodes": 0,
-                  "name": "cluster1",
-                  "size": "STANDARD_DS11_V2"
-              }
-          ],
-          "instance": [
-              {
-                  "name": "instance1",
-                  "size": "STANDARD_DS11_V2"
-              }
-          ]
-      },
-      "workspace": {
-          "high_business_impact": false
-      }
-  }
-  ```
-
-  ```json
-  {
-      "__name": "Production",
-      "compute": {
-          "cluster": [
-              {
-                  "idle_duration": "PT1H",
-                  "max_nodes": 3,
-                  "min_nodes": 0,
-                  "name": "cluster1",
-                  "size": "STANDARD_F4S_V2"
-              }
-          ],
-          "instance": [
-              {
-                  "name": "instance1",
-                  "size": "STANDARD_F4S_V2"
-              }
-          ]
-      },
-      "workspace": {
-          "high_business_impact": true
-      }
-  }
-  ```
+**Params coming soon**
 
 <!-- PARAMS:END -->
 
@@ -145,33 +52,9 @@ Connections from other bundles that this bundle depends on.
 <summary>View</summary>
 
 <!-- CONNECTIONS:START -->
-## Properties
 
-- **`azure_service_principal`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*
-    - **`client_id`** *(string)*: A valid UUID field.
+**Connections coming soon**
 
-      Examples:
-      ```json
-      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
-      ```
-
-    - **`client_secret`** *(string)*
-    - **`subscription_id`** *(string)*: A valid UUID field.
-
-      Examples:
-      ```json
-      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
-      ```
-
-    - **`tenant_id`** *(string)*: A valid UUID field.
-
-      Examples:
-      ```json
-      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
-      ```
-
-  - **`specs`** *(object)*
 <!-- CONNECTIONS:END -->
 
 </details>
@@ -184,43 +67,9 @@ Resources created by this bundle that can be connected to other bundles.
 <summary>View</summary>
 
 <!-- ARTIFACTS:START -->
-## Properties
 
-- **`azure_machine_learning_workspace`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*
-    - **`infrastructure`** *(object)*
-      - **`ari`** *(string)*: Azure Resource ID.
+**Artifacts coming soon**
 
-        Examples:
-        ```json
-        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
-        ```
-
-      - **`discovery_url`** *(string)*: An HTTPS endpoint URL.
-
-        Examples:
-        ```json
-        "https://example.com/some/path"
-        ```
-
-        ```json
-        "https://massdriver.cloud"
-        ```
-
-    - **`security`** *(object)*: Azure Security Configuration. Cannot contain additional properties.
-      - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
-        - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
-          - **`role`**: Azure Role.
-
-            Examples:
-            ```json
-            "Storage Blob Data Reader"
-            ```
-
-          - **`scope`** *(string)*: Azure IAM Scope.
-  - **`specs`** *(object)*
-    - **`azure`** *(object)*: .
-      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
 <!-- ARTIFACTS:END -->
 
 </details>
