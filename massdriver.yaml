@@ -1,6 +1,6 @@
 schema: draft-07
 name: azure-machine-learning-workspace
-description: "Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps."
+description: 'Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps.'
 source_url: github.com/massdriver-cloud/azure-machine-learning-workspace
 access: public
 type: infrastructure
@@ -51,7 +51,7 @@ params:
           $md.immutable: true
         high_business_impact:
           title: Enable high business impact features
-          description: "If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**."
+          description: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**.
           type: boolean
           default: false
           $md.immutable: true
@@ -83,9 +83,6 @@ params:
                 description: The name of the compute cluster. Must be unique within the region.
                 type: string
                 $md.immutable: true
-                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,29}[a-zA-Z0-9]{2}$
-                message:
-                  pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens. Last two characters cannot include a hyphen.
               size:
                 title: Size
                 description: The size of the compute cluster.
@@ -164,9 +161,6 @@ params:
                 description: The name of the compute instance. Must be unique within the region.
                 type: string
                 $md.immutable: true
-                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,21}[a-zA-Z0-9]{2}$
-                message:
-                  pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens. Last two characters cannot include a hyphen.
               size:
                 title: Size
                 description: The size of the compute instance.
@@ -207,12 +201,12 @@ ui:
   ui:order:
     - workspace
     - compute
-    - "*"
+    - '*'
   workspace:
     ui:order:
       - location
       - high_business_impact
-      - "*"
+      - '*'
     location:
       ui:field: supportedCloudLocationsDropdown
       cloudService: azure
@@ -220,7 +214,7 @@ ui:
     ui:order:
       - cluster
       - instance
-      - "*"
+      - '*'
     cluster:
       items:
         ui:order:
@@ -229,11 +223,11 @@ ui:
           - min_nodes
           - max_nodes
           - idle_duration
-          - "*"
+          - '*'
     instance:
       items:
         ui:order:
           - name
           - size
           - user
-          - "*"
+          - '*'
