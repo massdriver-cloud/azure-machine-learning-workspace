@@ -4,7 +4,6 @@ description: "Azure Machine Learning is a cloud service for accelerating and man
 source_url: github.com/massdriver-cloud/azure-machine-learning-workspace
 access: public
 type: infrastructure
-
 params:
   examples:
     - __name: Development
@@ -83,9 +82,6 @@ params:
                 description: The name of the compute cluster. Must be unique within the region.
                 type: string
                 $md.immutable: true
-                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,29}[a-zA-Z0-9]{2}$
-                message:
-                  pattern: Name must be between 3-32 characters. Valid characters are letters, digits, and hyphens. Name must start with a letter. Name must end with a letter or digit. No double hyphens. Last two characters cannot include a hyphen.
               size:
                 title: Size
                 description: The size of the compute cluster.
@@ -164,9 +160,6 @@ params:
                 description: The name of the compute instance. Must be unique within the region.
                 type: string
                 $md.immutable: true
-                pattern: ^(?!.*--)[a-zA-Z]{1}[a-zA-Z0-9-]{1,21}[a-zA-Z0-9]{2}$
-                message:
-                  pattern: Must be between 3-24 characters long. Valid characters are upper and lower case letters, digits, and hyphen. Must start with a letter. Must end with a letter or digit. No double hyphens. Last two characters cannot include a hyphen.
               size:
                 title: Size
                 description: The size of the compute instance.
@@ -188,21 +181,18 @@ params:
                 type: string
                 $md.immutable: true
                 format: uuid
-
 connections:
   required:
     - azure_service_principal
   properties:
     azure_service_principal:
       $ref: massdriver/azure-service-principal
-
 artifacts:
   required:
     - azure_machine_learning_workspace
   properties:
     azure_machine_learning_workspace:
       $ref: massdriver/azure-machine-learning-workspace
-
 ui:
   ui:order:
     - workspace
