@@ -1,9 +1,10 @@
 schema: draft-07
 name: azure-machine-learning-workspace
-description: "Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps."
+description: 'Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps.'
 source_url: github.com/massdriver-cloud/azure-machine-learning-workspace
 access: public
 type: infrastructure
+
 params:
   examples:
     - __name: Development
@@ -50,7 +51,7 @@ params:
           $md.immutable: true
         high_business_impact:
           title: Enable high business impact features
-          description: "If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**."
+          description: If your workspace contains sensitive data, you can enable high business impact features to help protect your data. This controls the amount of data Microsoft collects for diagnostic purposes and enables additional encryption in Microsoft managed environments. **This cannot be changed after the workspace is created**.
           type: boolean
           default: false
           $md.immutable: true
@@ -181,28 +182,31 @@ params:
                 type: string
                 $md.immutable: true
                 format: uuid
+
 connections:
   required:
     - azure_service_principal
   properties:
     azure_service_principal:
       $ref: massdriver/azure-service-principal
+
 artifacts:
   required:
     - azure_machine_learning_workspace
   properties:
     azure_machine_learning_workspace:
       $ref: massdriver/azure-machine-learning-workspace
+
 ui:
   ui:order:
     - workspace
     - compute
-    - "*"
+    - '*'
   workspace:
     ui:order:
       - location
       - high_business_impact
-      - "*"
+      - '*'
     location:
       ui:field: supportedCloudLocationsDropdown
       cloudService: azure
@@ -210,7 +214,7 @@ ui:
     ui:order:
       - cluster
       - instance
-      - "*"
+      - '*'
     cluster:
       items:
         ui:order:
@@ -219,11 +223,11 @@ ui:
           - min_nodes
           - max_nodes
           - idle_duration
-          - "*"
+          - '*'
     instance:
       items:
         ui:order:
           - name
           - size
           - user
-          - "*"
+          - '*'
