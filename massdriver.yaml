@@ -3,7 +3,6 @@ name: azure-machine-learning-workspace
 version: 1.0.0
 description: 'Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps.'
 source_url: https://github.com/massdriver-cloud/azure-machine-learning-workspace
-type: application
 params:
   examples:
   - __name: Development
