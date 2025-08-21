@@ -1,7 +1,6 @@
 resource "massdriver_artifact" "azure_machine_learning_workspace" {
-  field                = "azure_machine_learning_workspace"
-  provider_resource_id = azurerm_machine_learning_workspace.main.id
-  name                 = "Machine Learning Workspace"
+  field    = "azure_machine_learning_workspace"
+  name     = "Machine Learning Workspace"
   artifact = jsonencode(
     {
       data = {
