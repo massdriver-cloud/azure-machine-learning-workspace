@@ -182,16 +182,16 @@ params:
                 format: uuid
 connections:
   required:
-  - azure_service_principal
+  - azure_authentication
   properties:
-    azure_service_principal:
-      "$ref": massdriver/azure-service-principal
+    azure_authentication:
+      "$ref": azure-service-principal
 artifacts:
   required:
   - azure_machine_learning_workspace
   properties:
     azure_machine_learning_workspace:
-      "$ref": massdriver/azure-machine-learning-workspace
+      "$ref": azure-machine-learning-workspace
 ui:
   ui:order:
   - workspace
